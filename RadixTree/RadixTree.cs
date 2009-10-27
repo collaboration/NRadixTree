@@ -7,7 +7,7 @@ namespace RadixTree
     {
         public void Insert(string key, T value)
         {
-            throw new NotImplementedException();
+//            new List<RadixTreeNode>
         }
 
         public bool Delete(string key)
@@ -25,9 +25,9 @@ namespace RadixTree
             throw new NotImplementedException();
         }
 
-        public List<T> SearchPrefix(string prefix, int recordLimit)
+        public List<T> Search(string prefix)
         {
-            throw new NotImplementedException();
+            return new List<T>();
         }
 
         public long Size()

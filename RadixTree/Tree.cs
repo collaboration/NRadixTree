@@ -9,7 +9,7 @@ namespace RadixTree
         bool Delete(String key);
         T Find(String key);
         bool Contains(String key);
-        List<T> SearchPrefix(String prefix, int recordLimit);
+        List<T> Search(string prefix);
         long Size();
         String Complete(String prefix);
     }
