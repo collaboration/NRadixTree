@@ -1,0 +1,5 @@
+C:\scripts\Tree\RadixTree\obj\Debug\ResolveAssemblyReference.cache
+C:\scripts\Tree\RadixTree\bin\Debug\RadixTree.dll
+C:\scripts\Tree\RadixTree\bin\Debug\RadixTree.pdb
+C:\scripts\Tree\RadixTree\obj\Debug\RadixTree.dll
+C:\scripts\Tree\RadixTree\obj\Debug\RadixTree.pdb

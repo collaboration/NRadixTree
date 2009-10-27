@@ -1,0 +1,35 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
+  <MonoDevelop.Ide.DebuggingService>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Tree/TreeNode.cs" ctype="Workbench">
+    <Files>
+      <File FileName="Tree/RadixTree.cs" Line="2" Column="1" />
+      <File FileName="TreeTest/Test.cs" Line="15" Column="6" />
+      <File FileName="Tree/Tree.cs" Line="3" Column="39" />
+      <File FileName="Tree/AssemblyInfo.cs" Line="1" Column="1" />
+      <File FileName="Tree/DuplicateKeyException.cs" Line="4" Column="39" />
+      <File FileName="Tree/TreeNode.cs" Line="53" Column="5" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Tree" expanded="True" />
+          <Node name="TreeTest" expanded="True" selected="True">
+            <Node name="References" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+</Properties>
