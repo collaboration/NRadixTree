@@ -33,328 +33,330 @@ THE SOFTWARE.
  * @
  */
 using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using RadixTree;
 
-[TestFixture]
-public class RadixTreeTest {
 
-    RadixTree<String> trie; 
-    
-    [TestFixtureSetUp]
-    public void createTree() {
-        trie = new RadixTree<String>();
-    }
-    
-    [Test]
-    public void testSearchForPartialParentAndLeafKeyWhenOverlapExists() {
-        trie.Insert("abcd", "abcd");
-        trie.Insert("abce", "abce");
-        
-        Assert.That(trie.SearchPrefix("abe", 10).Count, Is.EqualTo(0));
-        Assert.That(trie.SearchPrefix("abd", 10).Count, Is.EqualTo(0));
-    }
-    
-    [Test]
-    public void testSearchForLeafNodesWhenOverlapExists() {
-        trie.Insert("abcd", "abcd");
-        trie.Insert("abce", "abce");
-   
-        assertEquals(1, trie.SearchPrefix("abcd", 10).size());
-        assertEquals(1, trie.SearchPrefix("abce", 10).size());
-    }
-    
-    [Test]
-    public void testSearchForStringSmallerThanSharedParentWhenOverlapExists() {
-        trie.Insert("abcd", "abcd");
-        trie.Insert("abce", "abce");
-   
-        assertEquals(2, trie.SearchPrefix("ab", 10).size());
-        assertEquals(2, trie.SearchPrefix("a", 10).size());
-    }
-    
-    [Test]
-    public void testSearchForStringEqualToSharedParentWhenOverlapExists() {
-        trie.Insert("abcd", "abcd");
-        trie.Insert("abce", "abce");
-   
-        assertEquals(2, trie.SearchPrefix("abc", 10).size());
-    }
-    
-    [Test]
-    public void testInsert() {
-        trie.Insert("apple", "apple");
-        trie.Insert("bat", "bat");
-        trie.Insert("ape", "ape");
-        trie.Insert("bath", "bath");
-        trie.Insert("banana", "banana"); 
-        
-        assertEquals(trie.Find("apple"), "apple");
-        assertEquals(trie.Find("bat"), "bat");
-        assertEquals(trie.Find("ape"), "ape");
-        assertEquals(trie.Find("bath"), "bath");
-        assertEquals(trie.Find("banana"), "banana");
-    }
-    
-    [Test]
-    public void testInsertExistingUnrealNodeConvertsItToReal() {
-    	trie.Insert("applepie", "applepie");
-    	trie.Insert("applecrisp", "applecrisp");
-    	
-    	assertFalse(trie.Contains("apple"));
-    	
-    	trie.Insert("apple", "apple");
-    	
-    	assertTrue(trie.Contains("apple"));
-    }
-    
-    [Test]
-    public void testDuplicatesNotAllowed() {
-        RadixTree<String> trie = new RadixTree<String>();
+namespace RadixTreeTest
+{
+    [TestFixture]
+    public class RadixTreeTest {
 
-        trie.Insert("apple", "apple");
-
-        try {
-            trie.Insert("apple", "apple2");
-            fail("Duplicate should not have been allowed");
-        } catch (DuplicateKeyException e) {
-            assertEquals("Duplicate key: 'apple'", e.getMessage());
+        RadixTree<String> trie; 
+    
+        [TestFixtureSetUp]
+        public void CreateTree() {
+            trie = new RadixTree<String>();
         }
-    }
     
-    [Test]
-	public void testInsertWithRepeatingPatternsInKey() {
-		trie.Insert("xbox 360", "xbox 360");
-		trie.Insert("xbox", "xbox");
-		trie.Insert("xbox 360 games", "xbox 360 games");
-		trie.Insert("xbox games", "xbox games");
-		trie.Insert("xbox xbox 360", "xbox xbox 360");
-		trie.Insert("xbox xbox", "xbox xbox");
-		trie.Insert("xbox 360 xbox games", "xbox 360 xbox games");
-		trie.Insert("xbox games 360", "xbox games 360");
-		trie.Insert("xbox 360 360", "xbox 360 360");
-		trie.Insert("xbox 360 xbox 360", "xbox 360 xbox 360");
-		trie.Insert("360 xbox games 360", "360 xbox games 360");
-		trie.Insert("xbox xbox 361", "xbox xbox 361");
+        [Test]
+        public void TestSearchForPartialParentAndLeafKeyWhenOverlapExists() {
+            trie.Insert("abcd", "abcd");
+            trie.Insert("abce", "abce");
         
-        assertEquals(12, trie.Size());
-	}
-
-    [Test]
-    public void testDeleteNodeWithNoChildren() {
-        RadixTree<String> trie = new RadixTree<String>();
-        trie.Insert("apple", "apple");
-        assertTrue(trie.Delete("apple"));
-    }
+            Assert.That(trie.SearchPrefix("abe", 10).Count, Is.EqualTo(0));
+            Assert.That(trie.SearchPrefix("abd", 10).Count, Is.EqualTo(0));
+        }
     
-    [Test]
-    public void testDeleteNodeWithOneChild() {
-        RadixTree<String> trie = new RadixTree<String>();
-        trie.Insert("apple", "apple");
-        trie.Insert("applepie", "applepie");
-        assertTrue(trie.Delete("apple"));
-        assertTrue(trie.Contains("applepie"));
-        assertFalse(trie.Contains("apple"));
-    }
+        [Test]
+        public void TestSearchForLeafNodesWhenOverlapExists() {
+            trie.Insert("abcd", "abcd");
+            trie.Insert("abce", "abce");
+   
+            Assert.That(trie.SearchPrefix("abcd", 10).Count, Is.EqualTo(1));
+            Assert.That(trie.SearchPrefix("abce", 10).Count, Is.EqualTo(1));
+        }
     
-    [Test]
-    public void testDeleteNodeWithMultipleChildren() {
-        RadixTree<String> trie = new RadixTree<String>();
-        trie.Insert("apple", "apple");
-        trie.Insert("applepie", "applepie");
-        trie.Insert("applecrisp", "applecrisp");
-        assertTrue(trie.Delete("apple"));
-        assertTrue(trie.Contains("applepie"));
-        assertTrue(trie.Contains("applecrisp"));
-        assertFalse(trie.Contains("apple"));
-    }
+        [Test]
+        public void TestSearchForStringSmallerThanSharedParentWhenOverlapExists() {
+            trie.Insert("abcd", "abcd");
+            trie.Insert("abce", "abce");
+
+            Assert.That(trie.SearchPrefix("ab", 10).Count, Is.EqualTo(2));
+            Assert.That(trie.SearchPrefix("a", 10).Count, Is.EqualTo(2));
+        }
     
-    [Test]
-    public void testCantDeleteSomethingThatDoesntExist() {
-        RadixTree<String> trie = new RadixTree<String>();
-        assertFalse(trie.Delete("apple"));
-    }
+        [Test]
+        public void TestSearchForStringEqualToSharedParentWhenOverlapExists() {
+            trie.Insert("abcd", "abcd");
+            trie.Insert("abce", "abce");
 
-    [Test]
-    public void testCantDeleteSomethingThatWasAlreadyDeleted() {
-        RadixTree<String> trie = new RadixTree<String>();
-        trie.Insert("apple", "apple");
-        trie.Delete("apple");
-        assertFalse(trie.Delete("apple"));
-    }
-
-    [Test]
-    public void testChildrenNotAffectedWhenOneIsDeleted() {
-        RadixTree<String> trie = new RadixTree<String>();
-        trie.Insert("apple", "apple");
-        trie.Insert("appleshack", "appleshack");
-        trie.Insert("applepie", "applepie");
-        trie.Insert("ape", "ape");
+            Assert.That(trie.SearchPrefix("abc", 10).Count, Is.EqualTo(2));
+        }
+    
+        [Test]
+        public void TestInsert() {
+            trie.Insert("apple", "apple");
+            trie.Insert("bat", "bat");
+            trie.Insert("ape", "ape");
+            trie.Insert("bath", "bath");
+            trie.Insert("banana", "banana"); 
         
-        trie.Delete("apple");
-
-        assertTrue(trie.Contains("appleshack"));
-        assertTrue(trie.Contains("applepie"));
-        assertTrue(trie.Contains("ape"));
-        assertFalse(trie.Contains("apple"));
-    }
+            Assert.That(trie.Find("apple"), Is.EqualTo("apple"));
+            Assert.That(trie.Find("bat"), Is.EqualTo("bat"));
+            Assert.That(trie.Find("ape"), Is.EqualTo("ape"));
+            Assert.That(trie.Find("bath"), Is.EqualTo("bath"));
+            Assert.That(trie.Find("banana"), Is.EqualTo("banana"));
+        }
     
-    [Test]
-    public void testSiblingsNotAffectedWhenOneIsDeleted() {
-        RadixTree<String> trie = new RadixTree<String>();
-        trie.Insert("apple", "apple");
-        trie.Insert("ball", "ball");
-        
-        trie.Delete("apple");
-        
-        assertTrue(trie.Contains("ball"));
-    }
-    
-    [Test]
-    public void testCantDeleteUnrealNode() {
-        RadixTree<String> trie = new RadixTree<String>();
-        trie.Insert("apple", "apple");
-        trie.Insert("ape", "ape");
-        
-        assertFalse(trie.Delete("ap"));
-    }
-    
-
-    [Test]
-    public void testCantFindRootNode() {
-        assertNull(trie.Find(""));
-    }
-
-    [Test]
-    public void testFindSimpleInsert() {
-        trie.Insert("apple", "apple");
-        assertNotNull(trie.Find("apple"));
-    }
-    
-    [Test]
-    public void testContainsSimpleInsert() {
-        trie.Insert("apple", "apple");
-        assertTrue(trie.Contains("apple"));
-    }
-
-    [Test]
-    public void testFindChildInsert() {
-        trie.Insert("apple", "apple");
-        trie.Insert("ape", "ape");
-        trie.Insert("appletree", "appletree");
-        trie.Insert("appleshackcream", "appleshackcream");
-        assertNotNull(trie.Find("appletree"));
-        assertNotNull(trie.Find("appleshackcream"));
-        assertNotNull(trie.Contains("ape"));
-    }
-    
-    [Test]
-    public void testContainsChildInsert() {
-        trie.Insert("apple", "apple");
-        trie.Insert("ape", "ape");
-        trie.Insert("appletree", "appletree");
-        trie.Insert("appleshackcream", "appleshackcream");
-        assertTrue(trie.Contains("appletree"));
-        assertTrue(trie.Contains("appleshackcream"));
-        assertTrue(trie.Contains("ape"));
-    }
-
-    [Test]
-    public void testCantFindNonexistantNode() {
-        assertNull(trie.Find("apple"));
-    }
-
-    [Test]
-    public void testDoesntContainNonexistantNode() {
-        assertFalse(trie.Contains("apple"));
-    }
-    
-    [Test]
-    public void testCantFindUnrealNode() {
-        trie.Insert("apple", "apple");
-        trie.Insert("ape", "ape");
-        assertNull(trie.Find("ap"));
-    }
-
-    [Test]
-    public void testDoesntContainUnrealNode() {
-        trie.Insert("apple", "apple");
-        trie.Insert("ape", "ape");
-        assertFalse(trie.Contains("ap"));
-    }
-
-
-    [Test]
-    public void testSearchPrefix_LimitGreaterThanPossibleResults() {
-        trie.Insert("apple", "apple");
-        trie.Insert("appleshack", "appleshack");
-        trie.Insert("appleshackcream", "appleshackcream");
-        trie.Insert("applepie", "applepie");
-        trie.Insert("ape", "ape");
-
-        List<String> result = trie.SearchPrefix("app", 10);
-        assertEquals(4, result.size());
-
-        assertTrue(result.Contains("appleshack"));
-        assertTrue(result.Contains("appleshackcream"));
-        assertTrue(result.Contains("applepie"));
-        assertTrue(result.Contains("apple"));
-    }
-    
-    [Test]
-    public void testSearchPrefix_LimitLessThanPossibleResults() {
-        trie.Insert("apple", "apple");
-        trie.Insert("appleshack", "appleshack");
-        trie.Insert("appleshackcream", "appleshackcream");
-        trie.Insert("applepie", "applepie");
-        trie.Insert("ape", "ape");
-
-        List<String> result = trie.SearchPrefix("appl", 3);
-        assertEquals(3, result.size());
-
-        assertTrue(result.Contains("appleshack"));
-        assertTrue(result.Contains("applepie"));
-        assertTrue(result.Contains("apple"));
-    }
-
-    [Test]
-    public void testGetSize() {
-        trie.Insert("apple", "apple");
-        trie.Insert("appleshack", "appleshack");
-        trie.Insert("appleshackcream", "appleshackcream");
-        trie.Insert("applepie", "applepie");
-        trie.Insert("ape", "ape");
-        
-        assertTrue(trie.getSize() == 5);
-    }
-    
-    [Test]
-    public void testDeleteReducesSize() {
-        trie.Insert("apple", "apple");
-        trie.Insert("appleshack", "appleshack");
-        
-        trie.Delete("appleshack");
-        
-        assertTrue(trie.getSize() == 1);
-    }    
-    
-    [Test]
-    public void testComplete() {
-    	// create a new Trie
-    	RadixTree<String> trie = new RadixTree<String>();
+        [Test]
+        public void TestInsertExistingUnrealNodeConvertsItToReal() {
+            trie.Insert("applepie", "applepie");
+            trie.Insert("applecrisp", "applecrisp");
     	
-        trie.Insert("apple", "apple");
-        trie.Insert("appleshack", "appleshack");
-        trie.Insert("applepie", "applepie");
-        trie.Insert("applegold", "applegold");
-        trie.Insert("applegood", "applegood");
+            Assert.That(trie.Contains("apple"), Is.False);
+    	
+            trie.Insert("apple", "apple");
+    	
+            Assert.That(trie.Contains("apple"));
+        }
+    
+        [Test]
+        public void TestDuplicatesNotAllowed() {
+            var trie = new RadixTree<String>();
+
+            trie.Insert("apple", "apple");
+
+            try {
+                trie.Insert("apple", "apple2");
+                Assert.Fail("Duplicate should not have been allowed");
+            } catch (DuplicateKeyException e) {
+                Assert.That(e.Message, Is.EqualTo("Duplicate key: 'apple'"));
+            }
+        }
+    
+        [Test]
+        public void TestInsertWithRepeatingPatternsInKey() {
+            trie.Insert("xbox 360", "xbox 360");
+            trie.Insert("xbox", "xbox");
+            trie.Insert("xbox 360 games", "xbox 360 games");
+            trie.Insert("xbox games", "xbox games");
+            trie.Insert("xbox xbox 360", "xbox xbox 360");
+            trie.Insert("xbox xbox", "xbox xbox");
+            trie.Insert("xbox 360 xbox games", "xbox 360 xbox games");
+            trie.Insert("xbox games 360", "xbox games 360");
+            trie.Insert("xbox 360 360", "xbox 360 360");
+            trie.Insert("xbox 360 xbox 360", "xbox 360 xbox 360");
+            trie.Insert("360 xbox games 360", "360 xbox games 360");
+            trie.Insert("xbox xbox 361", "xbox xbox 361");
         
-        assertEquals("", trie.Complete("z"));
-        assertEquals("apple", trie.Complete("a"));
-        assertEquals("apple", trie.Complete("app"));
-        assertEquals("appleshack", trie.Complete("apples"));
-        assertEquals("applego", trie.Complete("appleg"));
+            Assert.That(trie.Size(), Is.EqualTo(12));
+        }
+
+        [Test]
+        public void TestDeleteNodeWithNoChildren() {
+            var trie = new RadixTree<String>();
+            trie.Insert("apple", "apple");
+            Assert.That(trie.Delete("apple"));
+        }
+    
+        [Test]
+        public void TestDeleteNodeWithOneChild() {
+            var trie = new RadixTree<String>();
+            trie.Insert("apple", "apple");
+            trie.Insert("applepie", "applepie");
+            Assert.That(trie.Delete("apple"));
+            Assert.That(trie.Contains("applepie"));
+            Assert.That(trie.Contains("apple"));
+        }
+    
+        [Test]
+        public void TestDeleteNodeWithMultipleChildren() {
+            var trie = new RadixTree<String>();
+            trie.Insert("apple", "apple");
+            trie.Insert("applepie", "applepie");
+            trie.Insert("applecrisp", "applecrisp");
+            Assert.That(trie.Delete("apple"));
+            Assert.That(trie.Contains("applepie"));
+            Assert.That(trie.Contains("applecrisp"));
+            Assert.That(trie.Contains("apple"), Is.False);
+        }
+    
+        [Test]
+        public void TestCantDeleteSomethingThatDoesntExist() {
+            var trie = new RadixTree<String>();
+            Assert.That(trie.Delete("apple"), Is.False);
+        }
+
+        [Test]
+        public void TestCantDeleteSomethingThatWasAlreadyDeleted() {
+            var trie = new RadixTree<String>();
+            trie.Insert("apple", "apple");
+            trie.Delete("apple");
+            Assert.That(trie.Delete("apple"), Is.False);
+        }
+
+        [Test]
+        public void TestChildrenNotAffectedWhenOneIsDeleted() {
+            var trie = new RadixTree<String>();
+            trie.Insert("apple", "apple");
+            trie.Insert("appleshack", "appleshack");
+            trie.Insert("applepie", "applepie");
+            trie.Insert("ape", "ape");
+        
+            trie.Delete("apple");
+
+            Assert.That(trie.Contains("appleshack"));
+            Assert.That(trie.Contains("applepie"));
+            Assert.That(trie.Contains("ape"));
+            Assert.That(trie.Contains("apple"), Is.False);
+        }
+    
+        [Test]
+        public void TestSiblingsNotAffectedWhenOneIsDeleted() {
+            var trie = new RadixTree<String>();
+            trie.Insert("apple", "apple");
+            trie.Insert("ball", "ball");
+        
+            trie.Delete("apple");
+
+            Assert.That(trie.Contains("ball"));
+        }
+    
+        [Test]
+        public void TestCantDeleteUnrealNode() {
+            var trie = new RadixTree<String>();
+            trie.Insert("apple", "apple");
+            trie.Insert("ape", "ape");
+
+            Assert.That(trie.Delete("ap"), Is.False);
+        }
+    
+
+        [Test]
+        public void TestCantFindRootNode() {
+            Assert.That(trie.Find(""), Is.Null);
+        }
+
+        [Test]
+        public void TestFindSimpleInsert() {
+            trie.Insert("apple", "apple");
+            Assert.That(trie.Find("apple"), Is.Not.Null);
+        }
+    
+        [Test]
+        public void TestContainsSimpleInsert() {
+            trie.Insert("apple", "apple");
+            Assert.That(trie.Contains("apple"));
+        }
+
+        [Test]
+        public void TestFindChildInsert() {
+            trie.Insert("apple", "apple");
+            trie.Insert("ape", "ape");
+            trie.Insert("appletree", "appletree");
+            trie.Insert("appleshackcream", "appleshackcream");
+            Assert.That(trie.Find("appletree"), Is.Not.Null);
+            Assert.That(trie.Find("appleshackcream"), Is.Not.Null);
+            Assert.That(trie.Contains("ape"), Is.Not.Null);
+        }
+    
+        [Test]
+        public void TestContainsChildInsert() {
+            trie.Insert("apple", "apple");
+            trie.Insert("ape", "ape");
+            trie.Insert("appletree", "appletree");
+            trie.Insert("appleshackcream", "appleshackcream");
+            Assert.That(trie.Contains("appletree"));
+            Assert.That(trie.Contains("appleshackcream"));
+            Assert.That(trie.Contains("ape"));
+        }
+
+        [Test]
+        public void TestCantFindNonexistantNode() {
+            Assert.That(trie.Find("apple"), Is.Not.Null);
+        }
+
+        [Test]
+        public void TestDoesntContainNonexistantNode() {
+            Assert.That(trie.Contains("apple"), Is.False);
+        }
+    
+        [Test]
+        public void TestCantFindUnrealNode() {
+            trie.Insert("apple", "apple");
+            trie.Insert("ape", "ape");
+            Assert.That(trie.Find("ap"), Is.Null);
+        }
+
+        [Test]
+        public void TestDoesntContainUnrealNode() {
+            trie.Insert("apple", "apple");
+            trie.Insert("ape", "ape");
+            Assert.That(trie.Contains("ap"), Is.False);
+        }
+
+
+        [Test]
+        public void TestSearchPrefixLimitGreaterThanPossibleResults() {
+            trie.Insert("apple", "apple");
+            trie.Insert("appleshack", "appleshack");
+            trie.Insert("appleshackcream", "appleshackcream");
+            trie.Insert("applepie", "applepie");
+            trie.Insert("ape", "ape");
+
+            var result = trie.SearchPrefix("app", 10);
+            Assert.That(result.Count, Is.EqualTo(4));
+
+            Assert.That(result.Contains("appleshack"));
+            Assert.That(result.Contains("appleshackcream"));
+            Assert.That(result.Contains("applepie"));
+            Assert.That(result.Contains("apple"));
+        }
+    
+        [Test]
+        public void TestSearchPrefixLimitLessThanPossibleResults() {
+            trie.Insert("apple", "apple");
+            trie.Insert("appleshack", "appleshack");
+            trie.Insert("appleshackcream", "appleshackcream");
+            trie.Insert("applepie", "applepie");
+            trie.Insert("ape", "ape");
+
+            var result = trie.SearchPrefix("appl", 3);
+            Assert.That(result.Count, Is.EqualTo(3));
+
+            Assert.That(result.Contains("appleshack"));
+            Assert.That(result.Contains("applepie"));
+            Assert.That(result.Contains("apple"));
+        }
+
+        [Test]
+        public void TestGetSize() {
+            trie.Insert("apple", "apple");
+            trie.Insert("appleshack", "appleshack");
+            trie.Insert("appleshackcream", "appleshackcream");
+            trie.Insert("applepie", "applepie");
+            trie.Insert("ape", "ape");
+
+            Assert.That(trie.Size(), Is.EqualTo(5));
+        }
+    
+        [Test]
+        public void TestDeleteReducesSize() {
+            trie.Insert("apple", "apple");
+            trie.Insert("appleshack", "appleshack");
+        
+            trie.Delete("appleshack");
+
+            Assert.That(trie.Size(), Is.EqualTo(1));
+        }    
+    
+        [Test]
+        public void TestComplete() {
+            var trie = new RadixTree<String>();
+    	
+            trie.Insert("apple", "apple");
+            trie.Insert("appleshack", "appleshack");
+            trie.Insert("applepie", "applepie");
+            trie.Insert("applegold", "applegold");
+            trie.Insert("applegood", "applegood");
+        
+            Assert.That(trie.Complete("z"), Is.EqualTo(""));
+            Assert.That(trie.Complete("a"), Is.EqualTo("apple"));
+            Assert.That(trie.Complete("app"), Is.EqualTo("apple"));
+            Assert.That(trie.Complete("apples"), Is.EqualTo("appleshack"));
+            Assert.That(trie.Complete("appleg"), Is.EqualTo("applego"));
+        }
     }
 }
