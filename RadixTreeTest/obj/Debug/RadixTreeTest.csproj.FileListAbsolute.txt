@@ -1,5 +1,0 @@
-C:\scripts\Tree\RadixTreeTest\bin\Debug\RadixTreeTest.dll
-C:\scripts\Tree\RadixTreeTest\bin\Debug\RadixTreeTest.pdb
-C:\scripts\Tree\RadixTreeTest\obj\Debug\ResolveAssemblyReference.cache
-C:\scripts\Tree\RadixTreeTest\obj\Debug\RadixTreeTest.dll
-C:\scripts\Tree\RadixTreeTest\obj\Debug\RadixTreeTest.pdb
