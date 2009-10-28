@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-//Represents a node in the RadixTree
+//Represents a node in the RadixTree.
 namespace RadixTree
 {
     public class RadixTree<T> where T : class
