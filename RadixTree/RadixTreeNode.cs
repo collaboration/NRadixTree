@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+//This class needs to be deleted
 namespace RadixTree
 {
     public class RadixTreeNode<T>
