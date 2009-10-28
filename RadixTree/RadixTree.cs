@@ -3,25 +3,25 @@ using System.Collections.Generic;
 
 namespace RadixTree
 {
-    public class Node<T> where T : class
+    public class RadixTree<T> where T : class
     {
         private readonly string key;
         private T value;
-        private readonly List<Node<T>> children = new List<Node<T>>();
+        private readonly List<RadixTree<T>> children = new List<RadixTree<T>>();
 
-        public Node(string key, T value)
+        protected RadixTree(string key, T value)
         {
             this.key = key;
             this.value = value;
         }
 
-        public Node(){}
+        public RadixTree(){}
 
         public void Insert(string key, T value)
         {
             if (Contains(key)) throw new DuplicateKeyException(string.Format("Duplicate key: '{0}'", key));
 
-            var potentialChild = new Node<T>(key, value);
+            var potentialChild = new RadixTree<T>(key, value);
             var foundParent = children.Exists(existingChild =>
                                              {
                                                  if (existingChild.IsTheSameAs(key) && existingChild.IsMarkedForDeletion())
@@ -53,26 +53,26 @@ namespace RadixTree
             this.value = value;
         }
 
-        private void Disown(Node<T> existingChild)
+        private void Disown(RadixTree<T> existingChild)
         {
             children.Remove(existingChild);
         }
 
-        private void AcceptAsOwnChild(Node<T> child)
+        private void AcceptAsOwnChild(RadixTree<T> child)
         {
             if(NotItself(child)) children.Add(child);
         }
 
-        private bool NotItself(Node<T> child)
+        private bool NotItself(RadixTree<T> child)
         {
             return !Equals(child);
         }
 
-        private void ForkANewChildAndAddChildren(Node<T> existingChild, Node<T> newChild)
+        private void ForkANewChildAndAddChildren(RadixTree<T> existingChild, RadixTree<T> newChild)
         {
             var keyForNewParent = existingChild.CommonBeginningInKeys(newChild);
             keyForNewParent = keyForNewParent.Trim();
-            var surrogateParent = new Node<T>(keyForNewParent, default(T));
+            var surrogateParent = new RadixTree<T>(keyForNewParent, default(T));
 
             if(IsAlreadyAddedUnderTheCorrectParent(surrogateParent))
             {
@@ -92,22 +92,22 @@ namespace RadixTree
             Disown(existingChild);
         }
 
-        private bool IsTheSameAs(Node<T> parent)
+        private bool IsTheSameAs(RadixTree<T> parent)
         {
             return Equals(parent);
         }
 
-        private bool IsAlreadyAddedUnderTheCorrectParent(Node<T> surrogateParent)
+        private bool IsAlreadyAddedUnderTheCorrectParent(RadixTree<T> surrogateParent)
         {
             return Equals(surrogateParent);
         }
 
-        private bool IsMySibling(Node<T> potentialSibling)
+        private bool IsMySibling(RadixTree<T> potentialSibling)
         {
             return CommonBeginningInKeys(potentialSibling).Length > 0;
         }
 
-        private string CommonBeginningInKeys(Node<T> potentialSibling)
+        private string CommonBeginningInKeys(RadixTree<T> potentialSibling)
         {
             String commonStart = String.Empty;
             foreach (var character in key)
@@ -118,19 +118,14 @@ namespace RadixTree
             return commonStart;
         }
 
-        private bool IsReallyMyChild(Node<T> potentialChild)
+        private bool IsReallyMyChild(RadixTree<T> potentialChild)
         {
             return potentialChild.key.StartsWith(key);
         }
 
-        private bool CouldBeParentOf(Node<T> child)
-        {
-            return child.key.StartsWith(key);
-        }
-
         public bool Delete(string key)
         {
-            Node<T> nodeToBeDeleted = children.Find(child => child.Find(key) != null);
+            RadixTree<T> nodeToBeDeleted = children.Find(child => child.Find(key) != null);
             if(nodeToBeDeleted == null) return false;
 
             if(nodeToBeDeleted.HasChildren)
@@ -193,7 +188,7 @@ namespace RadixTree
         private List<T> SearchInMyChildren(string keyPrefix)
         {
             var searchResults = new List<T>();
-            var tempNode = new Node<T>(keyPrefix,null);
+            var tempNode = new RadixTree<T>(keyPrefix,null);
 
             children.Exists(node =>
                                 {
@@ -234,11 +229,6 @@ namespace RadixTree
             return key == keyPrefix;
         }
 
-        private bool Matches(string keyPrefix)
-        {
-            return key.StartsWith(keyPrefix);
-        }
-
         public long Size()
         {
             long size = 0;
@@ -267,7 +257,7 @@ namespace RadixTree
             return key;
         }
 
-        public bool Equals(Node<T> other)
+        public bool Equals(RadixTree<T> other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -278,8 +268,8 @@ namespace RadixTree
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (Node<T>)) return false;
-            return Equals((Node<T>) obj);
+            if (obj.GetType() != typeof (RadixTree<T>)) return false;
+            return Equals((RadixTree<T>) obj);
         }
 
         public override int GetHashCode()
