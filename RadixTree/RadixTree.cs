@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+//Represents a node in the RadixTree
 namespace RadixTree
 {
     public class Node<T> where T : class
