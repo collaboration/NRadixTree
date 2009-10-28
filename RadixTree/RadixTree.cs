@@ -44,15 +44,8 @@ namespace RadixTree
                                                  return false;
                                              });
 
-//            var parent = FindParentFromExistingChildren(potentialChild);
-//            if(parent != null)
-//            {
-//                parent.AcceptAsOwnChild(potentialChild);
-//                return;
-//            }
             if(foundParent) return;
             AcceptAsOwnChild(potentialChild);
-//            children.Add(potentialChild);            
         }
 
         private void MergeWith(T value)
