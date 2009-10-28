@@ -9,11 +9,11 @@ namespace RadixTreeTest
     [TestFixture]
     public class RadixTreeTest {
 
-        Node<String> tree; 
+        RadixTree<String> tree; 
     
         [SetUp]
         public void CreateTree() {
-            tree = new Node<String>();
+            tree = new RadixTree<String>();
         }
     
         [Test]
@@ -80,7 +80,7 @@ namespace RadixTreeTest
     
         [Test]
         public void TestDuplicatesNotAllowed() {
-            var trie = new Node<String>();
+            var trie = new RadixTree<String>();
 
             trie.Insert("apple", "apple");
 
@@ -113,14 +113,14 @@ namespace RadixTreeTest
 
         [Test]
         public void TestDeleteNodeWithNoChildren() {
-            var trie = new Node<String>();
+            var trie = new RadixTree<String>();
             trie.Insert("apple", "apple");
             Assert.That(trie.Delete("apple"));
         }
 
         [Test, Ignore("This contradicts with TestDeleteNodeWithMultipleChildren")]
         public void TestDeleteNodeWithOneChild() {
-            var trie = new Node<String>();
+            var trie = new RadixTree<String>();
             trie.Insert("apple", "apple");
             trie.Insert("applepie", "applepie");
             Assert.That(trie.Contains("apple"));
@@ -131,7 +131,7 @@ namespace RadixTreeTest
     
         [Test]
         public void TestDeleteNodeWithMultipleChildren() {
-            var trie = new Node<String>();
+            var trie = new RadixTree<String>();
             trie.Insert("apple", "apple");
             trie.Insert("applepie", "applepie");
             trie.Insert("applecrisp", "applecrisp");
@@ -143,13 +143,13 @@ namespace RadixTreeTest
     
         [Test]
         public void TestCantDeleteSomethingThatDoesntExist() {
-            var trie = new Node<String>();
+            var trie = new RadixTree<String>();
             Assert.That(trie.Delete("apple"), Is.False);
         }
 
         [Test]
         public void TestCantDeleteSomethingThatWasAlreadyDeleted() {
-            var trie = new Node<String>();
+            var trie = new RadixTree<String>();
             trie.Insert("apple", "apple");
             trie.Delete("apple");
             Assert.That(trie.Delete("apple"), Is.False);
@@ -157,7 +157,7 @@ namespace RadixTreeTest
 
         [Test, Ignore("Ignoring all deletes for now. But fix it later..")]
         public void TestChildrenNotAffectedWhenOneIsDeleted() {
-            var trie = new Node<String>();
+            var trie = new RadixTree<String>();
             trie.Insert("apple", "apple");
             trie.Insert("appleshack", "appleshack");
             trie.Insert("applepie", "applepie");
@@ -173,7 +173,7 @@ namespace RadixTreeTest
     
         [Test]
         public void TestSiblingsNotAffectedWhenOneIsDeleted() {
-            var trie = new Node<String>();
+            var trie = new RadixTree<String>();
             trie.Insert("apple", "apple");
             trie.Insert("ball", "ball");
         
@@ -184,7 +184,7 @@ namespace RadixTreeTest
     
         [Test]
         public void TestCantDeleteUnrealNode() {
-            var trie = new Node<String>();
+            var trie = new RadixTree<String>();
             trie.Insert("apple", "apple");
             trie.Insert("ape", "ape");
 
@@ -313,7 +313,7 @@ namespace RadixTreeTest
     
         [Test, Ignore("What is this Complete thing")]
         public void TestComplete() {
-            var trie = new Node<String>();
+            var trie = new RadixTree<String>();
     	
             trie.Insert("apple", "apple");
             trie.Insert("appleshack", "appleshack");
@@ -331,10 +331,18 @@ namespace RadixTreeTest
         [Test]
         public void Equality()
         {
-            var one = new Node<string>("xbox", "xbox");
-            var two = new Node<string>("xbox", "xbox");
+            var one = new RadixTreeForEquality("xbox", "xbox");
+            var two = new RadixTreeForEquality("xbox", "xbox");
 
             Assert.That(one.Equals(two));
+        }
+    }
+
+    public class RadixTreeForEquality: RadixTree<string>
+    {
+        public RadixTreeForEquality(string key , string value ): base(key, value)
+        {
+            
         }
     }
 }
