@@ -123,12 +123,6 @@ namespace RadixTree
             return potentialChild.key.StartsWith(key);
         }
 
-        private Node<T> FindParentFromExistingChildren(Node<T> potentialChild)
-        {
-            Node<T> parent = children.Find(node => node.CouldBeParentOf(potentialChild));
-            return parent;
-        }
-
         private bool CouldBeParentOf(Node<T> child)
         {
             return child.key.StartsWith(key);
